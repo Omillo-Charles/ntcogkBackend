@@ -15,17 +15,11 @@ export const createSubmission = async (req, res) => {
         }
 
         const SubmissionModel = getSubmissionModel(submissionType);
-        
-        const files = req.files ? req.files.map(file => ({
-            fileName: file.originalname,
-            contentType: file.mimetype,
-            data: file.buffer,
-            size: file.size
-        })) : [];
+        const filePaths = req.files ? req.files.map(file => file.path) : [];
 
         const submission = new SubmissionModel({
             ...req.body,
-            files
+            files: filePaths
         });
 
         await submission.save({ session });

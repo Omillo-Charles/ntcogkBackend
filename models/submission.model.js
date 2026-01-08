@@ -51,10 +51,8 @@ const submissionSchema = new mongoose.Schema({
         trim: true,
     },
     files: [{
-        fileName: String,
-        contentType: String,
-        data: Buffer,
-        size: Number
+        type: String,
+        required: [true, "At least one file is required"],
     }],
 }, { timestamps: true });
 
