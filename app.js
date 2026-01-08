@@ -24,8 +24,16 @@ const limiter = rateLimit({
 app.use(helmet());
 app.use(mongoSanitize());
 app.use(limiter);
+const allowedOrigins = [FRONTEND_URL, 'https://ntcogk-submissions.vercel.app'];
+
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
